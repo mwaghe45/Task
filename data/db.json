@@ -1,0 +1,22 @@
+{
+  "users": [
+    {
+      "city": "Navi Mumbai",
+      "last_name": "Waghe",
+      "pincode": "40045",
+      "first_name": "Mayur",
+      "states": "Maharashtra",
+      "email": "mwgh@gmail.com",
+      "id": 2
+    },
+    {
+      "city": "Agra",
+      "last_name": "singh",
+      "pincode": "40244",
+      "first_name": "Arpan",
+      "states": "Delhi",
+      "email": "arpn@gmail.com",
+      "id": 5
+    }
+  ]
+}

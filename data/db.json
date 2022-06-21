@@ -17,6 +17,15 @@
       "states": "Delhi",
       "email": "arpn@gmail.com",
       "id": 5
+    },
+    {
+      "city": "pune",
+      "last_name": "Waghe",
+      "pincode": "50910",
+      "first_name": "Nishant ",
+      "states": "Maharashtra",
+      "email": "nish@gmail.com",
+      "id": 6
     }
   ]
 }

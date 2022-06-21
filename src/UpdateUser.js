@@ -1,44 +1,39 @@
 import React, { useState } from "react";
-import axios from "axios";
 import {
   useHistory,
   useLocation,
 } from "react-router-dom/cjs/react-router-dom.min";
+import { useDispatch } from "react-redux/es/exports";
+import { updateusers } from "./redux/actions";
 
 const UpdateUser = () => {
   const data = useLocation();
   const users = data.state;
-  const [fName, setFName] = useState(users.first_name);
-  const [lName, setLName] = useState(users.last_name);
-  const [email, setEmail] = useState(users.email);
-  const [states, setStates] = useState(users.states);
-  const [city, setCity] = useState(users.city);
-  const [pincode, setPincode] = useState(users.pincode);
 
+  const [state, setState] = useState({
+    city: users.city,
+    last_name: users.last_name,
+    pincode: users.pincode,
+    first_name: users.first_name,
+    states: users.states,
+    email: users.email,
+  });
+
+  const { last_name, first_name, city, email, states, pincode } = state;
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
   const history = useHistory();
+  const dispatch = useDispatch();
 
-  const updateuser = async (e) => {
+  const updateuser = (e) => {
     e.preventDefault();
-    var data = {
-      city: city,
-      last_name: lName,
-      pincode: pincode,
-      first_name: fName,
-      states: states,
-      email: email,
-    };
-    console.log(data);
     if (pincode.length == 5) {
-      await axios
-        .put(`http://localhost:4000/users/${users.id}`, data)
-        .then((res) => {
-          console.log(res);
-          alert("User Update Successfully");
-          history.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      dispatch(updateusers(state, users.id));
+      alert("User Update Successfully");
+      history.push("/");
     } else {
       alert("Pincode should be maximum and minimum 5 numbers");
     }
@@ -59,8 +54,9 @@ const UpdateUser = () => {
                 type="text"
                 class="form-control"
                 required
-                value={fName}
-                onChange={(e) => setFName(e.target.value)}
+                name="first_name"
+                value={first_name}
+                onChange={handleChange}
               />
             </div>
             <div class="col-4">
@@ -68,8 +64,9 @@ const UpdateUser = () => {
               <input
                 type="text"
                 class="form-control"
-                value={lName}
-                onChange={(e) => setLName(e.target.value)}
+                name="last_name"
+                value={last_name}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -79,8 +76,9 @@ const UpdateUser = () => {
                 <input
                   type="email"
                   class="form-control"
+                  name="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange}
                   disabled
                   required
                 />
@@ -91,8 +89,9 @@ const UpdateUser = () => {
               <label className="text-primary">State</label>
               <select
                 class="form-select"
+                name="states"
                 value={states}
-                onChange={(e) => setStates(e.target.value)}
+                onChange={handleChange}
                 required
               >
                 <option selected disabled value="">
@@ -109,8 +108,9 @@ const UpdateUser = () => {
               <input
                 type="text"
                 class="form-control"
+                name="city"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -119,8 +119,9 @@ const UpdateUser = () => {
               <input
                 type="number"
                 class="form-control"
+                name="pincode"
                 value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>

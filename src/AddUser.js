@@ -1,38 +1,32 @@
 import React, { useState } from "react";
-import axios from "axios";
+import { useDispatch } from "react-redux/es/exports";
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { addusers } from "./redux/actions";
 function AddUser() {
-  const [fName, setFName] = useState("");
-  const [lName, setLName] = useState("");
-  const [email, setEmail] = useState("");
-  const [states, setStates] = useState("");
-  const [city, setCity] = useState("");
-  const [pincode, setPincode] = useState("");
+  const [state, setState] = useState({
+    city: "",
+    last_name: "",
+    pincode: "",
+    first_name: "",
+    states: "",
+    email: "",
+  });
+
+  const { last_name, first_name, city, email, states, pincode } = state;
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setState({ ...state, [name]: value });
+  };
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const adduser = (e) => {
     e.preventDefault();
-    var data = {
-      city: city,
-      last_name: lName,
-      pincode: pincode,
-      first_name: fName,
-      states: states,
-      email: email,
-    };
-    console.log(data);
-
     if (pincode.length == 5) {
-      axios
-        .post("http://localhost:4000/users", data)
-        .then((res) => {
-          console.log(res);
-          alert("User Create Successfully");
-          history.push("/");
-        })
-        .catch((err) => {
-          console.log(err);
-        });
+      dispatch(addusers(state));
+      alert("User Create Successfully");
+      history.push("/");
     } else {
       alert("Pincode should be maximum and minimum 5 numbers");
     }
@@ -52,8 +46,9 @@ function AddUser() {
                 type="text"
                 class="form-control"
                 required
-                value={fName}
-                onChange={(e) => setFName(e.target.value)}
+                name="first_name"
+                value={first_name}
+                onChange={handleChange}
               />
             </div>
             <div class="col-4">
@@ -61,8 +56,9 @@ function AddUser() {
               <input
                 type="text"
                 class="form-control"
-                value={lName}
-                onChange={(e) => setLName(e.target.value)}
+                name="last_name"
+                value={last_name}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -72,8 +68,9 @@ function AddUser() {
                 <input
                   type="email"
                   class="form-control"
+                  name="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={handleChange}
                   required
                 />
               </div>
@@ -83,8 +80,9 @@ function AddUser() {
               <label className="text-primary">State</label>
               <select
                 class="form-select"
+                name="states"
                 value={states}
-                onChange={(e) => setStates(e.target.value)}
+                onChange={handleChange}
                 required
               >
                 <option selected disabled value="">
@@ -101,8 +99,9 @@ function AddUser() {
               <input
                 type="text"
                 class="form-control"
+                name="city"
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>
@@ -111,8 +110,9 @@ function AddUser() {
               <input
                 type="number"
                 class="form-control"
+                name="pincode"
                 value={pincode}
-                onChange={(e) => setPincode(e.target.value)}
+                onChange={handleChange}
                 required
               />
             </div>
